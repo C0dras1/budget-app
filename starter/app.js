@@ -57,6 +57,19 @@ const budgetController = (function() {
       return newItem;
       
     },
+    deleteItem: function(type, id) {
+      let ids, index;
+      //select item not based on data.allItems[type][ID] but instead based on value equals to...
+      //find index of ID by recreating array
+      ids = data.allItems[type].map(i => {
+        return i.id;
+      })
+      index = ids.indexOf(id);
+      //remove the item in the array with index of index
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
     calculateBudget: function() {
 
       //calculate income & expenses
@@ -96,7 +109,9 @@ const UIController = (function() {
     budgetLabel: ".budget__value",
     incomeLabel: ".budget__income--value",
     expenseLabel: ".budget__expenses--value",
-    percentageLabel: ".budget__expenses--percentage"
+    percentageLabel: ".budget__expenses--percentage",
+    container: ".container.clearfix"
+
   }
   //public method to get accessed by other modules
   return {
@@ -112,10 +127,10 @@ const UIController = (function() {
       // 1. create html string with placeholder text
       if (type === 'inc') {
         element = DOMstrings.incomeContainer;
-        html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        html = '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
       } else if (type === 'exp') {
         element = DOMstrings.expensesContainer;
-        html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%21%%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+        html = '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">%21%%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
       }
       // 2. replace placeholder text with data
       newHtml = html.replace('%id%', obj.id);
@@ -124,6 +139,10 @@ const UIController = (function() {
       newHtml = newHtml.replace('%21%', 'what is happening?');
       // 3. insert html into the DOM
       document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+    },
+    deleteListItem: function(selectorID) {
+      let el = document.getElementById(selectorID);
+      el.parentNode.removeChild(el);
     },
     clearFields: function() {
       let fields, fieldsArray;
@@ -167,6 +186,8 @@ const appController = (function(budgetCtrl, UICtrl) {
         crtlAddItem();
       }
     })
+
+    document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
   }
 
   const updateBudget = function() {
@@ -197,6 +218,27 @@ const appController = (function(budgetCtrl, UICtrl) {
     }
     
   };
+
+  const ctrlDeleteItem = function(e) {
+    let itemID, splitID, type, ID;
+    //get the id of the item's div
+    itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
+    if (itemID) {
+      //inc-1 split method to seperate type and id
+      splitID = itemID.split('-');
+      type = splitID[0];
+      ID = parseInt(splitID[1]);
+      //delete item from data structure
+      budgetCtrl.deleteItem(type, ID);
+      //delete item from UI
+      UICtrl.deleteListItem(itemID);
+      //update and show new budget
+      updateBudget();
+
+    } else {
+      console.log('failed');
+    }
+  }
 
   return {
     init: function() {
