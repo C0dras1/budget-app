@@ -1,7 +1,11 @@
 /**********************************************
 *** GENERAL
 **********************************************/
+:root {
+    --income: #4fff6c;
+    --expense: #FF5049;
 
+}
 * {
     margin: 0;
     padding: 0;
@@ -24,8 +28,8 @@ body {
 }
 
 .right { float: right; }
-.red { color: #FF5049 !important; }
-.red-focus:focus { border: 1px solid #FF5049 !important; }
+.red { color: var(--expense) !important; }
+.red-focus:focus { border: 1px solid var(--expense) !important; }
 
 /**********************************************
 *** TOP PART
@@ -71,11 +75,11 @@ body {
 
 .budget__income {
     margin-bottom: 10px;
-    background-color: #28B9B5;
+    background-color: var(--income);
 }
 
 .budget__expenses {
-    background-color: #FF5049;
+    background-color: var(--expense);
 }
 
 .budget__income--text,
@@ -85,6 +89,9 @@ body {
     color: #444;
     margin-top: 2px;
 }
+
+.income__title { color: var(--income);}
+.expenses__title { color: var(--expense);}
 
 .budget__income--value,
 .budget__expenses--value {
@@ -170,7 +177,7 @@ body {
 .add__description:focus,
 .add__value:focus {
     outline: none;
-    border: 1px solid #28B9B5;
+    border: 1px solid var(--income);
 }
 
 .add__btn:focus { outline: none; }
@@ -199,8 +206,8 @@ h2 {
     margin-bottom: 15px;
 }
 
-.icome__title { color: #28B9B5; }
-.expenses__title { color: #FF5049; }
+.icome__title { color: var(--income); }
+.expenses__title { color: var(--expense); }
 
 .item {
     padding: 13px;
@@ -239,7 +246,7 @@ h2 {
 .expenses .item__value,
 .expenses .item__percentage,
 .expenses .item__delete--btn {
-    color: #FF5049;
+    color: var(--expense);
 }
 
 
@@ -269,7 +276,7 @@ h2 {
 .unpaid {
     background-color: #FFDAD9 !important;
     cursor: pointer;
-    color: #FF5049;
+    color: var(--expense);
 
 }
 
