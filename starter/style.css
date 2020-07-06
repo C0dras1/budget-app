@@ -4,7 +4,6 @@
 :root {
     --income: #4fff6c;
     --expense: #FF5049;
-
 }
 * {
     margin: 0;
@@ -163,7 +162,7 @@ body {
     font-size: 35px;
     background: none;
     border: none;
-    color: #28B9B5;
+    color: var(--income);
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
@@ -240,7 +239,7 @@ h2 {
 
 .income .item__value,
 .income .item__delete--btn {
-    color: #28B9B5;
+    color: var(--income);
 }
 
 .expenses .item__value,
